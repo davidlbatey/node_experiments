@@ -1,13 +1,15 @@
 var url = require("url");
 
-function route(request, response){
-  
-  var pathname = url.parse(request.url).pathname;
-  console.log("New request for " + pathname)
+function route(handle, pathname){
 
-  response.writeHead(200, {"Content-Type":"text/plain"});
-  response.write("Woosh!");
-  response.end();
+  console.log("New request for " + pathname)
+  
+  if (typeof handle[pathname] === 'function') {
+    handle[pathname]();
+  } else {
+    console.log("No request handler found for " + pathname);
+  }
+
 }
 
 exports.route = route

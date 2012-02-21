@@ -1,7 +1,17 @@
-var http = require("http");
+var http = require("http")
+  , url  = require("url");
 
-function boot(routes){
-  var server = http.createServer(routes);
+function boot(routes, handle){
+  var server = http.createServer( function (request, response){
+      
+      var pathname = url.parse(request.url).pathname;
+      routes(handle, pathname);
+
+      response.writeHead(200, {"Content-Type": "text/plain"});
+      response.write("Woooot!");
+      response.end();
+  }
+  );
 
   server.listen(3000);
 
